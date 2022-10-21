@@ -1,9 +1,38 @@
+import { useState } from "react"
 import InputComponent from "../../../components/input"
 import ToggleButton from "../../../components/toggle_button"
+import { TaskProps } from "../../../entities/TaskProps"
+import Table from "../components/Table"
 import TaskDetails from "../components/TaskDetails"
 import { Card, Container, Row } from "./style"
 
-const HomeView: React.FC = () => {
+interface HomeViewProps {
+  data: TaskProps[],
+  onEdit(task: TaskProps): void,
+  onCreate(task: TaskProps): void,
+  onDelete(id: TaskProps['id']): void,
+}
+
+const TOGGLE_OPTIONS = [
+  {
+    label: 'Dia',
+    value: 'day',
+  },
+  {
+    label: 'Semana',
+    value: 'week',
+  },
+  {
+    label: 'Mês',
+    value: 'month',
+  },
+]
+
+const HomeView: React.FC<HomeViewProps> = ({
+  data, onEdit, onCreate, onDelete
+}) => {
+  const [selected, setSelected] = useState<TaskProps | null>(null)
+
   return (
     <Container>
       <Row style={{ justifyContent: 'space-evenly', }}>
@@ -11,35 +40,21 @@ const HomeView: React.FC = () => {
           <Row>
             <InputComponent placeholder="Pesquisar por titulo" />
             <ToggleButton
-              options={[
-                {
-                  label: 'Dia',
-                  value: 'day',
-                },
-                {
-                  label: 'Semana',
-                  value: 'week',
-                },
-                {
-                  label: 'Mês',
-                  value: 'month',
-                },
-              ]}
+              options={TOGGLE_OPTIONS}
             />
           </Row>
+          <Table
+            data={data}
+            selected={selected?.id}
+            onSelect={(task) => setSelected(task)}
+          />
         </Card>
-        <TaskDetails 
-          data={{
-            title: 'exemplo',
-            date: new Date(),
-            description: 'opa',
-            startTime: { hour: 3, min: 8 },
-            endTime: { hour: 13, min: 20 },
-          }}
-          onEdit={() => console.log()}
-          onCreate={() => console.log()}
-          onDelete={() => console.log()}
-          onUnselect={() => console.log()}
+        <TaskDetails
+          data={selected}
+          onEdit={onEdit}
+          onCreate={onCreate}
+          onDelete={onDelete}
+          onUnselect={() => setSelected(null)}
         />
       </Row>
     </Container>
