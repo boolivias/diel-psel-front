@@ -1,6 +1,8 @@
+import HomeView from "./view";
+
 const HomePage: React.FC = () => {
   return (
-    <p>Home</p>
+    <HomeView />
   )
 }
 
