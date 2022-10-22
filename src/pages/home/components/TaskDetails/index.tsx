@@ -62,6 +62,8 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({
       onEdit(dataAux)
     else
       onCreate(dataAux)
+
+    onUnselect()
   }
 
   function handleSetValue(v: string, field: keyof TaskProps) {
@@ -77,6 +79,11 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({
     }
 
     setDataAux({ ...dataAux })
+  }
+
+  function handleDelete(id: string) {
+    onDelete(id)
+    onUnselect()
   }
 
   return (
@@ -147,7 +154,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({
               <Button
                 type="danger"
                 text="Deletar"
-                onClick={() => onDelete(data?.id)}
+                onClick={() => handleDelete(data?.id as string)}
               />
               <Button type="alert" text="Editar" onClick={() => setEditEnabled(true)} />
             </Row>

@@ -34,7 +34,7 @@ const Table: React.FC<TableProps> = ({
               }
               onClick={() => onSelect(dt)}
             >
-              <td>{index}</td>
+              <td>{index + 1}</td>
               <td>{dt.title}</td>
               <td>
                 {`${dt?.startTime.hour.toString().padStart(2, '0')}:${dt?.startTime.min.toString().padStart(2, '0')}`}
